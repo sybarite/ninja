@@ -1,0 +1,6 @@
+You'll put two kinds of classes here:
+
+1. Classes which are standalone and can be used by any module.
+2. Application Specific Libraries, unless they explicitly belong elsewhere (such as vendor libraries).
+
+For example: entity, repository, helper, base classes for layouts, etc.

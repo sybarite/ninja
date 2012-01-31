@@ -1,0 +1,38 @@
+# Avoid Using .htaccess files. Use the logic below in your virtual host file for a better performance
+
+# Turn on 'development mode. Remember to comment the line below during production.
+SetEnv APPLICATION_ENV "development"
+
+# Turn on URL rewriting
+RewriteEngine On
+
+#You might need the line below in a few-cases
+#RewriteBase /path/to/app/
+
+# Protect hidden files from being viewed
+<Files .*>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
+# Rewrite Conditions >>> [Use one of the two below, comment the other]
+
+    #>For small-medium traffic sites
+      # Allow any files or directories that exist to be displayed directly (not tested for symlinks)
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteCond %{REQUEST_FILENAME} !-l
+      RewriteCond %{REQUEST_FILENAME} !-d
+
+    #>For high volumes sites
+      # Selectively whitelist any files or directories to be displayed directly
+      #RewriteCond $1 !^((index\.php)|static|[a-z0-9A-Z]*\.(ico|gif|html|php)$)
+
+
+# Rewrite Rule >>> [Use one of the two below, comment the other]
+    #>If you use mod_php
+      RewriteRule ^(.*)$ index.php/$1 [L,QSA]
+    #>If you use FastCGI or fcgid
+      #RewriteRule ^(.*)$ index.php?/$1 [L,QSA] #For hosts with FastCGI
+
+# Compress output
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/javascript application/x-javascript text/css

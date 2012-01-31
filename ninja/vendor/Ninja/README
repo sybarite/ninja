@@ -1,0 +1,284 @@
+// +------------------------------------------------------------------------+
+// | PHP-Ninja                                                              |
+// +------------------------------------------------------------------------+
+// | Ninja														            |
+// | Copyright (c) Dayson Pais, Epicwhale. All rights reserved.             |
+// | Version       2.38                                                     |
+// | Last modified 17/08/2011                                               |
+// | Email         dayson@epicwhale.org                                     |
+// | Web           http://epicwhale.org                                     |
+// +------------------------------------------------------------------------+
+// | This program is free software; you can redistribute it and/or modify   |
+// | it under the terms of the GNU General Public License version 2 as      |
+// | published by the Free Software Foundation.                             |
+// |                                                                        |
+// | This program is distributed in the hope that it will be useful,        |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of         |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          |
+// | GNU General Public License for more details.                           |
+// |                                                                        |
+// | Please give credit on sites that use this and submit changes           |
+// | of the script so other people can use them as well.                    |
+// | This script is free to use, don't abuse.                               |
+// +------------------------------------------------------------------------+
+//
+
+Changelog
+
+v2.37 17/08/2011
+- Read upgrade guide at: http://redmine.epicwhale.org/projects/macaroni/wiki/Upgrading_to_Ninja_237_from_236
+- Added ->getActionParam to \Ninja\Controller\Request to access parameters to passed to actions.
+- Fixed path to Zend library in bootstrap
+- Fixed paht in command line script launcher for linux
+- Moved cli bootstrap into application/cli/bootstrap.php
+- Moved console commands into application/cli/Console/Command
+- Moved model, controller, view into modules/default/Model, Controller, View to accomodate HMVC directory layout. closes #244
+- The default controller for the homepage and every module's root is now called Root. closes #248
+- Each module can have it's own error controller. For eg module/Blog/Error.php (must extend \Ninja\Controller\Error)
+- Allow \Ninja\View to load files from separate modules. closes #249
+- Moved n.bat and n.sh into application/cli for better seggregation of web from cli.
+- Removed NINJA_APPLICATION_LIBRARY_PATH in favor of NINJA_APPLICATION_COMMON_PATH
+- Improved default cli bootstrap file. Kept it completely independent of the application bootstrap file.
+- Bug Fix: Error Controller now calls \Ninja\Exception::Handler so that exceptions when not in debug mode are always logged no matter what.
+- Removed \Ninja\Controller->_viewFileExists. Create \Ninja\View::find(..) function to check if a view file exists or not + more. closes #252
+
+v2.36 13/08/2011
+- Read upgrade guide at: http://redmine.epicwhale.org/projects/macaroni/wiki/Upgrading_to_Ninja_236_from_235
+- Merge system/Ninja into library/Ninja. There's no more system/ directory!
+- Enhanced .htaccess files. Still experimental, follow progress at #228
+- Separate \Ninja\Request into \Ninja\Controller\Request\Http, \Ninja\Controller\Router and Ninja\Controller\Dispatcher. closes #189
+- Moved location of ninjac.php, the command line entry script. Renamed command line bat/shell script to n.bat and n respectively. closes #232
+- Create error controller to handle 404, exceptions, etc at \Controller\Error. testing #182
+- Moved this README file to library/Ninja.
+- Renamed view/ error files to 404.php and 503.php
+- Removed deprecated Ninja::$request->  closes #217
+- Created a response object accessible via $this->response in controllers
+- Renamed ninja/library to ninja/vendor. closes #237
+- Moved log directory inside 'tmp'. closes #237
+- Removed $this->request->redirect(..). Use $this->response->setRedirect(..) instead.
+- Removed debug(..) function due to some namespacing issues. 
+
+v2.35 11/08/2011
+- Namespace error in Ninja\File\Image. closes #230
+- Replace NINJA_APPLICATION_CONFIG_PATH in config files (development.php & production.php) with __DIR__ equivalent. closes #226
+- Added ->isPost and ->isGet to the Ninja\Request class
+
+v2.34 30/07/2011
+- Migrated Ninja Library to php 5.3.x namespaces
+  Migration guide: http://redmine.epicwhale.org/projects/macaroni/wiki/Switching_codebase_to_native_namespaces
+
+v2.33 06/07/2011
+- Use native namespaces for defining console commands. closes #186
+- Switch controllers to use native namespaces. closes #188
+  Refer for conversion: http://redmine.epicwhale.org/projects/macaroni/wiki/Switching_controllers_to_native_namespaces
+
+v2.32 02/07/2011
+- Added public member variable $request to Ninja_Controller. You can now access the request object from your Controller using $this->request
+- Made public member variables in Ninja::$request to protected
+    REPLACE the following
+        Ninja::$request->uri        --> Ninja::$request->getRequestUri()
+        Ninja::$request->_uriRoute  --> Ninja::$request->getRoutedUri()
+        Ninja::$request->action     --> Ninja::$request->getActionName()
+        Same thing ->params --> getParams()
+                   ->paramsCount --> getParamsCount()
+                   etc...
+- Added getQuery(..), getPost(..), getCookie(..)
+- Renamed 'public' directory to 'static'. closes #168
+- Within controllers, the Ninja::$request can be accessed via $this->request->  (Do not use Ninja::$request, it's deprecated)
+  Moreover, no other part of your application except for Controllers should be accessing the Ninja::$request object. Bad MVC Design.
+
+v2.31 28/06/2011
+- Delete the deprecated Controller class system/Controller.php. Use Ninja_Controller instead. closes #169
+- PHP 5.3.x namespace support integrated. closes #174
+- Fixed naming convention error. Renamed Ninja::$autoloader to Ninja::$autoLoader. (Replace usage in your bootstrap.php). closes #175
+
+
+v2.30 02/05/2011
+- Ignore private and protected scalar variables in database insert and insertOrUpdate functions. closes #162
+
+v2.29 19/04/2011
+- Revamped Ninja_Db completely to use Zend_Db_Adapter_Pdo_MySql in the background. closes #158 closes #128
+    Blindly rename all uses of
+        db->query(             =>  db->fetchAll(
+        db->insert(            =>  db->insertObject(
+        db->update(            =>  db->updateObject(
+        db->row(               =>  db->fetchRow(
+        db->value(             =>  db->fetchOne(
+
+        db->getLastInsertID()    =>  db->lastInsertId()
+        db->transactionBegin(    =>  db->beginTransaction(
+        db->transactionCommit(   =>  db->commit(
+        db->transactionRollback( => db->rollBack(
+        db->insertMultiple(      => db->insertMany(
+        
+- db->insert( $table, $insert, $duplicateRow) NO MORE takes the third parameter $duplicateRow. Separate function created instead.
+  Instead use/replace with
+        db->insertOrUpdate($table, $insertRow, $updateRow)
+
+- Rename Ninja_Db_Function => Ninja_Db_Expr
+  Also, delete the file library/Ninja/Db/Function.php
+
+- Refactor Ninja_Db::getTime(   => $db->getTime(   // getTime(..) is no more a static function
+
+
+
+v2.28 16/04/2011
+- Renamed Controller functions. closes #159
+        $this->renderView(          => $this->_renderView(
+        $this->viewFileExists(      => $this->_viewFileExists(
+
+- DO NOT use a controller constructor anymore! (Makes use of the _before() and _after()). closes #152
+    Replace inside application/controller
+        public function __construct()  ==> function _before()      // DO NOT use an scope specifier like public, protected, etc for this one *_yet_*
+
+- Controller classes now follow the class naming convention. closes #160
+  VERY IMPORTANT!
+        class Home extends Ninja_Controller     => Controller_Home
+        class Product extends Ninja_Controller  => Controller_Product
+        class Edit extends Ninja_Controller (at controller/modules/meetings/Edit.php) now becomes
+        => classController_Modules_Meetings_Edit at controller/Modules/Meetings/Edit.php (case sensitive directory names)
+
+
+v2.27 14/04/2011
+- Final changes to accomodate the naming convention mistakes.
+    Refactor
+        Ninja::$request->is_ajax()          --> Ninja::$request->isAjax()       // IMPORTANT
+
+        Ninja::$base_url    --> Ninja::$baseUrl
+        Ninja::$current_url --> Ninja::$currentUrl
+        Ninja::$is_cli      --> Ninja::$isCli  (Probably not used by you yet)
+        Ninja::$is_windows  --> $isWindows     (Probably not used by you yet)
+
+        Ninja::$request->controller_file    --> Ninja::$request->controllerFile     (Probably not used by you yet)
+        Ninja::$request->controller_class   --> Ninja::$request->controllerClass    (Probably not used by you yet)
+        Ninja::$request->uri_route          --> Ninja::$request->uriRoute           (Probably not used by you yet)
+        Ninja::$request->params_count       --> Ninja::$request->paramsCount        (Probably not used by you yet)
+        Ninja::$request->user_agent         --> Ninja::$request->userAgent          (Probably not used by you yet)
+        Ninja::$request->client_ip          --> Ninja::$request->clientIP           (Probably not used by you yet)
+
+v2.26 12/04/2011
+- (Experimental) Added Ninja_File, Ninja_Directory and Ninja_Filesystem ported from Flourish with enhanced functionality
+- Upgraded Zend lib to v1.11.5
+
+v2.25 11/04/2011
+- Remove deprecated constants and over-usage of dirname(...) stat call. closes #148
+- Removed deprecated REQUESTED_PATH constant too.
+- When Home page is requested, Ninja::$currentUrl now is an empty string '' instead of the previous '/'. Makes more sense.
+- Renamed NINJA_SYSTEM defined constant to NINJA_SYSTEM_PATH
+- (Testing) Added support for executing commands through console. Can be used for cron jobs, etc. wip #71
+- Created bat and shell file for executing Ninja console commands.
+
+v2.24 06/04/2011
+- Ninja_Db->insert(..) now returns TRUE as long as the insert / onDuplicateUpdate query is successful. The return value is not
+dependent on the number of rows affected.
+
+v2.23 20/03/2011
+- Ninja_Db->query(..) now accepts an array of 'bind' parameters. closes #130
+- Ninja_Db->value($query, $bind) function added to return the value in the first column of the first row of an SQL query executed.
+- Ninja_Db database operations now throw Exceptions incase of any error in SQL syntax, Column mismatch, etc.
+
+v2.22 18/03/2011
+- Controller class deprecated. Use Ninja_Controller instead. closes #132
+- Deprecated $this->LoadClassFile() is now obsolete and removed from Controller.
+- Controller: LoadViewFile() and ViewFileExists() renamed to $this->renderView( and viewFileExists().
+- Created Ninja_View, the new cool way to render view files. closes #113
+- Minor bug fix in exception handling.
+
+v2.21 18/03/2011
+Framework Related:
+- Added Ninja::$request->is_ajax() to check if AJAX request from Javascript frameworks.
+
+Library Related:
+- Add a super-awesome Cookie class Ninja_Cookie with salt support. closes #107
+- Reworked FormHelper as Ninja_Form_Helper. Added default value support for get and post functions. closes #39
+
+
+v2.20 17/03/2011
+Framework related:
+- Configuration file formats changed once more. Move all Ninja loadable resources under ninja.resource.* keys.
+  Refer to: http://redmine.epicwhale.org/projects/macaroni/wiki/Upgrade_from_Ninja_212_to_Ninja_220
+- Autoloader complete. closes #105
+- Finalized recommended structure of app in associate with the framework. closes #117
+- Implemented Ninja_Registry to store global objects. closes #40
+
+Library related:
+- All library classes have been renamed. 
+- Zend_Resource added as an access point for getting resources with predefined configurations.
+- Uses Zend_Session for user session management. Added as resource. closes #126
+- Uses Zend_Cache for complete cache management. Added as resource.
+- Move time definition constants in CacheManager as class constants in Ninja_Time. closes #127
+- libMail eliminated in favor of Zend_Mail. Added as resource.
+
+v2.12 13/03/2011
+- Eradicated use of __DIR__ in framework which is php 5.3 only
+
+v2.11 13/03/2011
+- Core framework classes now autoload.
+- Following constants now obsolete: MACARONI_STARTTIME, LOGS_PATH, VIEW_PATH, CLASSES_PATH, DATA_PATH, CACHE_PATH, APPLIB_PATH
+
+
+v2.10 12/03/2011
+- Renamed classes to 'model' under application.
+- Added support to autoload registered namespaces. WIP #105
+- General improvement in codebase.
+
+
+v2.09 11/03/2011
+- Removed config.php, database.php, library/session.php, library/cache.php from config directory.
+  All configurations now merged into new configuration template.
+- Removed _Config class. Reworked configuration loading/reading. closes #108
+- Support for separate development, production configurations using SetEnv configurations.
+  index.php can also now define the APPLICATION_ENV constant to identify environment. closes #9
+- Move default controller config to bootstrap.php. closes #124
+- Debug mode is now enabled/disabled through a constant in index.php
+
+
+v2.08 09/03/2011
+- Removed _ErrorReporter compeltely
+- Introducing logging support through the Ninja_Log instance available at Ninja::$log.
+- error/exception handling
+- Completed Ninja_Request which is accessible through Ninja::$request
+- Better framework error messages with solutions to common problems.
+
+v2.07 08/03/2011
+- Renamed framework to ninja
+- Created directory 'library' under 'application/'
+- Create directory 'tmp' under 'ninja' (removed cache). closes #112
+- Added application/bootstrap.php closes #38
+- Removed config/routes.php, moved routes into bootstrap instead. closes #121
+- Made sure defined is used before using define in CacheManager. closes #114
+
+
+v2.06 26/02/2011
+- Minor bug fix in Session_Database.class adapter for Session. closes #100
+- Improvised Error Reporter with support for displaying notices, warnings, errors etc when not in debug mode. Earlier it would only display exceptions. All errors and exceptions still continue to be logged when even not in debug mode.
+
+v2.05 16/01/2011
+- Improvement in url detection. Switched to a very sexy function form forrst. closes #76
+- Use "pretty" URLs in PHP on any server. closes #68
+
+v2.04 02/01/2011
+- Ignore arrays in MySqlDBRow objects while inserting/updating rows. closes #64
+- Session manager reworked with adapter support for easy switching in future. closes #70
+- All session related config now a part of config/library/session.php instead of session_manager.php
+- Zend Cache library implemented with CacheManager (beta). closes #66
+
+
+v2.03 18/12/2010
+- notices & exceptions are now both logged even when not in debug mode
+- set_exception_handler added & configured to log exceptions at exception.txt
+- the exception handler displays xdebug formatted messages if xdebug is activated
+- added view/error/error_exception.php which is called when an exception takes place when not in debug mode
+
+v2.02 11/12/2010
+- Renamed Mail.class.php to libMail.class.php to accomodate an interface/factory pattern in future.
+
+v2.01 04/12/2010
+- Added testing library/file/Upload.class.php with documentation
+- Added checkFILES function to library/form/FormHelper.class.php
+
+v2.00 04/12/2010
+- Created default config files
+- Added testing library mail/Mail.class.php and form/FormHelper.class.php
+- Permanently include of database/MySqlDB.class.php and session/SessionManager.class.php
+- Integrated Macaroni project into subversion

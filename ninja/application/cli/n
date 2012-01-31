@@ -1,0 +1,8 @@
+#!/usr/bin/php
+<?php
+/**
+ * If you are having troubles running this file, use dos2unix like below
+ *  dos2unix -k -q n
+ */
+require_once(__DIR__.'/../../vendor/Ninja/includes/ninjac.php');
+?>
