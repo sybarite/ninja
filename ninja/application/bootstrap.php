@@ -19,18 +19,23 @@
 		set_include_path(get_include_path() . PATH_SEPARATOR . ZEND_PATH ); // Add Zend's parent directory to include path
 	}
 
-	// Register namespaces to autoload
-	Ninja::$autoLoader->registerNamespace('Model', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Model');  // You can chain to add additional namespaces
+	// Register namespaces for Autoloading
+	Ninja::$autoLoader->registerNamespace('Model', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Model')
+                      ->registerNamespace('View', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'View');  // You can chain to add additional namespaces
 
 // -- Register any modules --
 
-    // Send all requests under example.com/blog to modules/Blog/Controller
-    Ninja::$router->registerModule('Blog', 'blog');
+    // Ninja::$router->registerModule('Blog', 'blog'); // will send all requests under example.com/blog to modules/Blog/Controller
 
-// -- Routing Setup [help: http://code.google.com/p/php-ninja/wiki/Routing] ---------------
+// -- Routing Setup : Tutorial @ https://github.com/epicwhale/ninja/wiki/URI-Routing
 
-    if( ! Ninja::$isCli ) // No routing during command line mode
+    if( ! Ninja::$isCli ) // No routing during command line mode (since the router is not available)
     {
-        // Note: the home controller no more needs to be registered. The 'Root' controller is called under the Default module for it.
-        Ninja::$router->addRoute('foo', 'test/(:num)', 'routed/here/$1');
+        /**
+         * Routing in Ninja follows the same functionality as http://codeigniter.com/user_guide/general/routing.html
+         *
+         * e.g: if you need to route http://example.com/product/52 to http://example.com/catalog/product_lookup_by_id/52
+         *      Ninja::$router->addRoute('product_lookup_by_id', 'product/:num', 'catalog/product_lookup_by_id/$1');
+         *                                ^^ any unique name      ^^ source       ^^ destination
+         */
     }
