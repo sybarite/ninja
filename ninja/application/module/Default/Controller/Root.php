@@ -23,7 +23,7 @@ class Root extends \Ninja\Controller
      */
     public function index()
     {
-        $view = new \Ninja\View(array('default', 'markup/home.php'));
+        $view = new \Ninja\View(array('Default', 'markup/home.php'));
 
         $this->_layout->setContentSlot($view);
     }
