@@ -3,8 +3,8 @@
 // +------------------------------------------------------------------------+
 // | Ninja														            |
 // | Copyright (c) Dayson Pais, Epicwhale. All rights reserved.             |
-// | Version       2.39                                                     |
-// | Last modified 16/02/2012                                               |
+// | Version       2.40                                                     |
+// | Last modified 17/02/2012                                               |
 // | Email         dayson@epicwhale.org                                     |
 // | Web           http://epicwhale.org                                     |
 // +------------------------------------------------------------------------+
@@ -24,6 +24,11 @@
 //
 
 Changelog
+
+v2.40 17/02/2012
+- Additions and improvements to .htaccess from h5bp
+- Additions to .gitignore from h5bp
+- Added humans.txt, robots.txt
 
 v2.39 16/02/2012
 - In debug mode, when controller is not found, a 404 header request is sent.
