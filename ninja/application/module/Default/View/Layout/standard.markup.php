@@ -17,8 +17,10 @@
 <head>
     <meta charset="utf-8">
 
-    <title></title>
-    <meta name="description" content="">
+    <title><?php echo htmlspecialchars($helper->getTitle()) ?> | MyWebsite</title>
+    <?php if($helper->getMetaDescription()): ?>
+    <meta name="description" content="<?php echo htmlspecialchars($helper->getMetaDescription()); ?>">
+    <?php endif ?>
 
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">

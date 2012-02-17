@@ -2,7 +2,9 @@
     /**
      * @var \View\Layout\Helper $helper
      */
-    $helper->appendStylesheet('assets/default/css/home.css') // add a stylesheet to head
+    $helper->setTitle('Home')
+           ->setMetaDescription('This is my home page')
+           ->appendStylesheet('assets/default/css/home.css') // add a stylesheet to head
            ->queueScript('assets/default/js/home.js'); // add a script to footer
 ?>
 
