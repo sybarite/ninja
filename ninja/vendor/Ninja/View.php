@@ -224,7 +224,7 @@ class View
 
         if( ! $this->_file )
         {
-            \Ninja::$errorReporter->add("Could not find view file <em>`{$this->_file}`</em>.", 4)
+            \Ninja::$errorReporter->add("Could not find view file <em>`" . print_r($file, true) . "`</em>.", 4)
                                   ->terminate();
         }
 

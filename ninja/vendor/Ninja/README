@@ -3,8 +3,8 @@
 // +------------------------------------------------------------------------+
 // | Ninja														            |
 // | Copyright (c) Dayson Pais, Epicwhale. All rights reserved.             |
-// | Version       2.38                                                     |
-// | Last modified 17/08/2011                                               |
+// | Version       2.39                                                     |
+// | Last modified 16/02/2012                                               |
 // | Email         dayson@epicwhale.org                                     |
 // | Web           http://epicwhale.org                                     |
 // +------------------------------------------------------------------------+
@@ -24,6 +24,10 @@
 //
 
 Changelog
+
+v2.39 16/02/2012
+- In debug mode, when controller is not found, a 404 header request is sent.
+- View file not found error message enhancement
 
 v2.37 17/08/2011
 - Read upgrade guide at: http://redmine.epicwhale.org/projects/macaroni/wiki/Upgrading_to_Ninja_237_from_236

@@ -114,8 +114,9 @@ class ErrorReporter
 	            $data .= "<li> $msg </li>";
 	        }
 	        $data .= "</ul>";
-	        
-	        include NINJA_VENDOR_PATH .  'Ninja/includes/view/errors.php';
+
+            header("HTTP/1.0 404 Not Found");
+            include NINJA_VENDOR_PATH .  'Ninja/includes/view/errors.php';
 	        exit();
 		}
 		else
