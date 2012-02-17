@@ -25,6 +25,12 @@
 
 Changelog
 
+v2.41 17/02/2012
+- Added sample layout + helper classes to common.
+- Created home page controller with h5bp sample page that uses a layout.
+- Renamed static directory to assets. Introduced uploads directory formally.
+- Improved 404 and 503 page.
+
 v2.40 17/02/2012
 - Additions and improvements to .htaccess from h5bp
 - Additions to .gitignore from h5bp

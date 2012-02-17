@@ -21,7 +21,8 @@
 
 	// Register namespaces for Autoloading
 	Ninja::$autoLoader->registerNamespace('Model', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Model')
-                      ->registerNamespace('View', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'View');  // You can chain to add additional namespaces
+                      ->registerNamespace('View', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'View')
+                      ->registerNamespace('Layout', NINJA_APPLICATION_COMMON_PATH . 'Layout');  // You can chain to add additional namespaces
 
 // -- Register any modules --
 

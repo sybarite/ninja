@@ -66,7 +66,8 @@ return array(
 	
 	// Common paths
 	'path' => array(
-		'static' => 'static/',		// location of css, js, static files relative to application url
+        'assets' => 'assets/',
+		//'static' => 'static/',		// location of css, js, static files relative to application url
 	),
 	
 	
