@@ -33,6 +33,10 @@ class ErrorReporter
 					'type'	=> 'Class is not a controller.',
 					'soln'	=> 'All controllers must extend the <em>Controller</em> class.'
 				 ),
+            10 => array(
+                'type'	=> 'Requested Controller is Abstract.',
+                'soln'	=> 'Controllers with an an <em>Abstract</em> prefix are treated as Abstract classes and cannnot be instantiated.'
+            ),
 			7 => array(
 					'type'	=> 'Action declared as static function.',
 					'soln'	=> 'Actions defined in a controller must be <em>non-static</em>.'

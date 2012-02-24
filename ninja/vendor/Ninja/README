@@ -3,8 +3,8 @@
 // +------------------------------------------------------------------------+
 // | Ninja														            |
 // | Copyright (c) Dayson Pais, Epicwhale. All rights reserved.             |
-// | Version       2.40                                                     |
-// | Last modified 17/02/2012                                               |
+// | Version       2.42                                                     |
+// | Last modified 24/02/2012                                               |
 // | Email         dayson@epicwhale.org                                     |
 // | Web           http://epicwhale.org                                     |
 // +------------------------------------------------------------------------+
@@ -24,6 +24,9 @@
 //
 
 Changelog
+
+v2.42 24/02/2012
+- Allow placing abstract classes under controller directories using the prefix Abstract. closes #2
 
 v2.41 17/02/2012
 - Added sample layout + helper classes to common.

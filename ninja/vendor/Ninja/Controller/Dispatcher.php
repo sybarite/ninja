@@ -29,12 +29,17 @@ class Dispatcher
             return;
         }
 
-
         // If a valid controller class found ?
         $controllerDirPath = NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Controller/'; // Directory under which all controllers are located
 
         $controllerFile =  \Ninja::$autoLoader->find($request->getControllerName());
 
+        // if the controller name has an Abstract prefix to it (we assume it's abstract)
+        if (strpos(substr( $request->getControllerName(), strrpos($request->getControllerName(), '\\') + 1 ), 'Abstract') === 0)
+        {
+            \Ninja::$errorReporter->add("<em>`{$request->getControllerName()}`</em> is Abstract and cannot be accessed publicly", 10)
+                                   ->terminate();
+        }
 
         // Include the controller's class file
         require_once $controllerFile;
