@@ -21,7 +21,11 @@ abstract class Error extends \Ninja\Controller
             throw new \Ninja\Controller\Exception('Error controller called, so error will be thrown', 404);
         }
 
-        // Send it to the exception handler for logging
-        \Ninja\Exception::Handler($this->request->getException());
+        // if not 404 page not found error?
+        if ($this->request->getException()->getCode() != 404)
+        {
+            // Send it to the exception handler for logging
+            \Ninja\Exception::Handler($this->request->getException());
+        }
     }
 }

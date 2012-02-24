@@ -27,6 +27,7 @@ Changelog
 
 v2.42 24/02/2012
 - Allow placing abstract classes under controller directories using the prefix Abstract. closes #2
+- No error log entry should be made to php_error.log when page not found in production mode. closes #3
 
 v2.41 17/02/2012
 - Added sample layout + helper classes to common.
