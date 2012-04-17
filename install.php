@@ -1,8 +1,5 @@
 <?php
 
-// Sanity check, install should only be checked from index.php
-//defined('SYSPATH') or exit('Install tests must be loaded from within index.php!');
-
 if (version_compare(PHP_VERSION, '5.3', '<'))
 {
     // Clear out the cache to prevent errors. This typically happens on Windows/FastCGI.
