@@ -27,10 +27,10 @@
             <p>If you would like to edit this layout you'll find the <strong>Layout</strong> file located at:</p>
             <code style="font-family: Consolas, Monaco, Courier New, Courier, monospace;font-size: 12px;background-color: #f9f9f9;border: 1px solid #D0D0D0;color: #002166;display: block;margin: 14px 0 14px 0;padding: 12px 10px 12px 10px">ninja/application/module/Default/View/Layout/standard.markup.php</code>
 
-            <p>The <strong>CSS</strong> file is located at:</p>
+            <p>The <strong>CSS</strong> files included are:</p>
             <code style="font-family: Consolas, Monaco, Courier New, Courier, monospace;font-size: 12px;background-color: #f9f9f9;border: 1px solid #D0D0D0;color: #002166;display: block;margin: 14px 0 14px 0;padding: 12px 10px 12px 10px">/assets/default/css/global.css <br />/assets/default/css/home.css</code>
 
-            <p>The <strong>JavaScript</strong> file is located at:</p>
+            <p>The <strong>JavaScript</strong> files included are:</p>
             <code style="font-family: Consolas, Monaco, Courier New, Courier, monospace;font-size: 12px;background-color: #f9f9f9;border: 1px solid #D0D0D0;color: #002166;display: block;margin: 14px 0 14px 0;padding: 12px 10px 12px 10px">/assets/default/js/global.js <br /> /assets/default/js/home.js</code>
 
             <img src="<?php $helper->assetUrl('common/img/logo_medium.gif') ?>" alt="my website" />
