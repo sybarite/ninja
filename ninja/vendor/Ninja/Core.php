@@ -108,15 +108,15 @@ class Core
         }
 
         /**
-             * Set the PHP error reporting level. If you set this in php.ini, you remove this.
-             * @see  http://php.net/error_reporting
-             *
-             * When developing your application, it is highly recommended to enable all notices
-             * and strict warnings. To report all PHP errors, set it to -1. Compatible with future versions of PHP.
-             *
-             * In a production environment, we should turn off all error reporting.
-             *
-             */
+         * Set the PHP error reporting level. If you set this in php.ini, you remove this.
+         * @see  http://php.net/error_reporting
+         *
+         * When developing your application, it is highly recommended to enable all notices
+         * and strict warnings. To report all PHP errors, set it to -1. Compatible with future versions of PHP.
+         *
+         * In a production environment, we should turn off all error reporting.
+         *
+         */
         error_reporting(-1);
 
         // Determine if we are running in a command line environment
@@ -147,11 +147,11 @@ class Core
 
         self::$log = new \Ninja\Log();
 
-        /*
-             * ------------------------------------------------------
-             *  Assumption: Upto this line, there is no scope for error. So the error handler won't kick-in
-             * ------------------------------------------------------
-             */
+        /**
+         * ------------------------------------------------------
+         *  Assumption: Upto this line, there is no scope for error. So the error handler won't kick-in
+         * ------------------------------------------------------
+         */
 
         /**
              * Define our custom error handler
@@ -198,8 +198,8 @@ class Core
         self::$router = new \Ninja\Controller\Router();
 
         /**
-             * Create the HTTP Request Object based on the request from the Web Server
-             */
+         * Create the HTTP Request Object based on the request from the Web Server
+         */
         $request = \Ninja\Controller\Request\Http::createFromServerRequest();
 
         if (isset( $_SERVER['SCRIPT_NAME']))
@@ -213,8 +213,8 @@ class Core
         self::_doBootStrap(NINJA_APPLICATION_PATH . 'bootstrap.php');
 
         /**
-             * Process the HTTP request object
-             */
+         * Process the HTTP request object
+         */
         $routerProcessData = self::$router->processHttpRequest($request);
 
         // Initialize dispatcher
