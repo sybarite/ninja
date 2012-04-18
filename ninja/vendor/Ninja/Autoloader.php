@@ -34,20 +34,20 @@ class Autoloader
         return $this;
     }
 
-	/**
-     * Provides autoloading support for classes that follow Ninja's naming conventions.
-     * @param string $className
-     */
+    /**
+    * Provides autoloading support for classes that follow Ninja's naming conventions.
+    * @param string $className
+    */
     protected function _autoload($className)
-	{
+    {
         $expectedFile = $this->find($className);
 
-		if( $expectedFile !== NULL )
+        if( $expectedFile !== NULL )
         {
             // if file does not exist, then PHP itself will throw the fatal error
             require $expectedFile;
         }
-	}
+    }
 
     /**
      * Predicts where a class name should be located depending
