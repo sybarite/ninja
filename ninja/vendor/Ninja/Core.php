@@ -154,13 +154,13 @@ class Core
          */
 
         /**
-             * Define our custom error handler
-             */
+         * Define our custom error handler
+         */
         set_error_handler(array('Ninja\Exception', 'ErrorHandler'));
 
         /**
-             * Define our custom exception handler
-             */
+         * Define our custom exception handler
+         */
         set_exception_handler( array('Ninja\Exception', 'Handler') );
 
         self::$errorReporter = new \Ninja\ErrorReporter();
