@@ -45,7 +45,7 @@ class Autoloader
         if( $expectedFile !== NULL )
         {
             // if file does not exist, then PHP itself will throw the fatal error
-            require $expectedFile;
+            require_once $expectedFile;
         }
     }
 
