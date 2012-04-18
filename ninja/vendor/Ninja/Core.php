@@ -126,11 +126,11 @@ class Core
         self::$isWindows = (DIRECTORY_SEPARATOR === '\\');
 
         // Check if the most evil magic quotes are enabled.
-        if ( (bool) get_magic_quotes_gpc() )
+        if ((bool)get_magic_quotes_gpc())
             throw new \Ninja\Exception("Magic Quotes Enabled. Ninja refuses to fight!");
 
         // Check for register globals status
-        if ( ini_get('register_globals') )
+        if (ini_get('register_globals'))
             throw new \Ninja\Exception("register_globals Enabled. Ninja refuses to fight!");
 
         if (self::$debug)
@@ -149,7 +149,7 @@ class Core
 
         /**
          * ------------------------------------------------------
-         *  Assumption: Upto this line, there is no scope for error. So the error handler won't kick-in
+         *  Assumption: Up to this line, there is no scope for error. So the error handler won't kick-in
          * ------------------------------------------------------
          */
 
@@ -163,6 +163,9 @@ class Core
          */
         set_exception_handler( array('Ninja\Exception', 'Handler') );
 
+        /**
+         * Initialize the error reporter which is used to log and notify about framework errors
+         */
         self::$errorReporter = new \Ninja\ErrorReporter();
     }
 
@@ -180,13 +183,13 @@ class Core
             // Do not execute more than once
             return;
         }
-        self::$_init = TRUE;
+        self::$_init = true;
 
         // First let's initialize the autoloader
         self::$autoLoader = new \Ninja\Autoloader();
 
         // Autoload the Ninja library from now on
-        self::$autoLoader->registerNamespace('Ninja', NINJA_VENDOR_PATH . 'Ninja');
+        self::$autoLoader->registerNamespace('Ninja', __DIR__);
 
         // The config file may use the \Ninja\Config class, so autoloading should already be initialized by here
         self::$config = require $configFile;
@@ -202,9 +205,9 @@ class Core
          */
         $request = \Ninja\Controller\Request\Http::createFromServerRequest();
 
-        if (isset( $_SERVER['SCRIPT_NAME']))
+        if (isset($_SERVER['SCRIPT_NAME']))
         {
-            self::$baseUrl = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'] , '/') + 1 ); //find the full url to this application from server root
+            self::$baseUrl = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'] , '/') + 1 ); // find the full URL to this application from server root
         }
 
         self::$currentUrl = self::$baseUrl . $request->getRequestUri();
@@ -220,7 +223,7 @@ class Core
         // Initialize dispatcher
         $dispatcher = new \Ninja\Controller\Dispatcher();
         // Initialize response object
-        $response   = new \Ninja\Controller\Response\Http();
+        $response = new \Ninja\Controller\Response\Http();
 
         // If in debug mode, simply try to dispatch with no failover error controller
         if (NINJA_DEBUG)
@@ -259,10 +262,10 @@ class Core
                 }
 
                 $errorRequest->setException($e)
-                    ->setErrorRequest($request)
-                    ->setModuleName('Default')
-                    ->setControllerName($errorControllerName)
-                    ->setActionName('index');
+                             ->setErrorRequest($request)
+                             ->setModuleName('Default')
+                             ->setControllerName($errorControllerName)
+                             ->setActionName('index');
 
                 self::_dispatch($dispatcher, $errorRequest, $errorResponse);
                 $errorResponse->sendResponse();
@@ -280,7 +283,7 @@ class Core
      * @param Controller\Response\Http $response
      * @return void
      */
-    private static function _dispatch(\Ninja\Controller\Dispatcher $dispatcher, \Ninja\Controller\Request\AbstractRequest $request, \Ninja\Controller\Response\Http $response)
+    protected static function _dispatch(\Ninja\Controller\Dispatcher $dispatcher, \Ninja\Controller\Request\AbstractRequest $request, \Ninja\Controller\Response\Http $response)
     {
         ob_start();
         $dispatcher->dispatch($request, $response);
@@ -314,7 +317,7 @@ class Core
         self::$autoLoader = new \Ninja\Autoloader();
 
         // Autoload the Ninja library from now on
-        self::$autoLoader->registerNamespace('Ninja', NINJA_VENDOR_PATH . 'Ninja');
+        self::$autoLoader->registerNamespace('Ninja', __DIR__);
 
         // The config file may use the \Ninja\Config class, so autoloading should already be initialized by here
         self::$config = require $configFile;
@@ -346,7 +349,7 @@ class Core
      * @param string $file file name
      * @return void
      */
-    protected  static function _doBootStrap($file)
+    protected static function _doBootStrap($file)
     {
         // Load the bootstrap file, this allows routes, etc to be defined before the request is parsed and executed
         include $file;
@@ -362,7 +365,7 @@ class Core
      * @param mixed|null $default a default value if path does not exist
      * @return mixed
      */
-    public static function config($path, $default = NULL)
+    public static function config($path, $default = null)
     {
         return \Ninja\Config::path(self::$config, $path, $default , '.');
     }
