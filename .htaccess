@@ -25,7 +25,7 @@ RewriteEngine On
 
     #>For high volumes sites
       # Selectively whitelist any files or directories to be displayed directly
-      #RewriteCond $1 !^((index\.php)|assets|[a-z0-9A-Z-_]*\.(ico|gif|html|php)$)
+      #RewriteCond $1 !^((index\.php)|assets|[a-z0-9A-Z]*\.(ico|gif|html|php)$)
 
 
 # Rewrite Rule >>> [Use one of the two below, comment the other]
