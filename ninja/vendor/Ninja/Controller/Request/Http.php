@@ -20,7 +20,6 @@ class Http extends AbstractRequest
      */
     const SCHEME_HTTPS = 'https';
 
-
 	/**
 	* The URI of the http request
 	* @var string
@@ -68,7 +67,7 @@ class Http extends AbstractRequest
          * RewriteRule ^(.*)$ index.php/$1 [L,QSA]
          * #RewriteRule ^(.*)$ index.php?/$1 [L,QSA] #For Hosts like Dreamhost, etc with FastCGI
         */
-        $nakedPath = strtolower(self::getPrettyUrl(false)); // lower case without any prefix or suffix '/'
+        $nakedPath = strtolower(self::_getPrettyUrl(false)); // lower case without any prefix or suffix '/'
         $request->setRequestUri(empty($nakedPath) ? '' : ($nakedPath . '/')); // store the URI with a sffix '/'
         
         if (isset($_SERVER['HTTP_REFERER']))
@@ -77,7 +76,7 @@ class Http extends AbstractRequest
             $request->setReferrer($_SERVER['HTTP_REFERER']);
 		}
 
-		if ( isset($_SERVER['HTTP_USER_AGENT']) )
+		if (isset($_SERVER['HTTP_USER_AGENT']))
 		{
 			// Set the client user agent
             $request->setUserAgent($_SERVER['HTTP_USER_AGENT']);
@@ -86,6 +85,9 @@ class Http extends AbstractRequest
         return $request;
     }
 
+    /**
+     * @return string
+     */
     public function getRequestUri()
     {
         return $this->_uri;
@@ -123,7 +125,7 @@ class Http extends AbstractRequest
 	 * @param   bool    $prefix_slash   whether to return the uri with a '/' in front
 	 * @return  string  the uri
 	 */
-	private static function getPrettyUrl($prefix_slash = true)
+	protected static function _getPrettyUrl($prefix_slash = true)
 	{
 		if (isset($_SERVER['PATH_INFO']))
 		{
@@ -171,27 +173,29 @@ class Http extends AbstractRequest
 		return ($prefix_slash ? '/' : '').str_replace(array('//', '../'), '/', trim($uri, '/'));
 	}
 
-
-
     /**
      * Set GET values
      *
-     * @param  string|array $spec
-     * @param  null|mixed $value
-     * @return Ninja_Request
+     * @param string|array $spec
+     * @param null|mixed $value
+     * @return Http
+     * @throws Exception
      */
     public function setQuery($spec, $value = null)
     {
-        if ((null === $value) && !is_array($spec)) {
+        if ((null === $value) && !is_array($spec))
+        {
             throw new Exception('Invalid value passed to setQuery(); must be either array of values or key/value pair');
         }
-        if ((null === $value) && is_array($spec)) {
-            foreach ($spec as $key => $value) {
+        if ((null === $value) && is_array($spec))
+        {
+            foreach ($spec as $key => $value)
+            {
                 $this->setQuery($key, $value);
             }
             return $this;
         }
-        $_GET[(string) $spec] = $value;
+        $_GET[(string)$spec] = $value;
         return $this;
     }
 
@@ -207,7 +211,8 @@ class Http extends AbstractRequest
      */
     public function getQuery($key = null, $default = null)
     {
-        if (null === $key) {
+        if (null === $key)
+        {
             return $_GET;
         }
 
@@ -217,22 +222,26 @@ class Http extends AbstractRequest
     /**
      * Set POST values
      *
-     * @param  string|array $spec
-     * @param  null|mixed $value
-     * @return Ninja_Request
+     * @param string|array $spec
+     * @param null|mixed $value
+     * @return Http
+     * @throws Exception
      */
     public function setPost($spec, $value = null)
     {
-        if ((null === $value) && !is_array($spec)) {
+        if ((null === $value) && !is_array($spec))
+        {
             throw new Exception('Invalid value passed to setPost(); must be either array of values or key/value pair');
         }
-        if ((null === $value) && is_array($spec)) {
-            foreach ($spec as $key => $value) {
+        if ((null === $value) && is_array($spec))
+        {
+            foreach ($spec as $key => $value)
+            {
                 $this->setPost($key, $value);
             }
             return $this;
         }
-        $_POST[(string) $spec] = $value;
+        $_POST[(string)$spec] = $value;
         return $this;
     }
 
@@ -248,7 +257,8 @@ class Http extends AbstractRequest
      */
     public function getPost($key = null, $default = null)
     {
-        if (null === $key) {
+        if (null === $key)
+        {
             return $_POST;
         }
 
@@ -267,7 +277,8 @@ class Http extends AbstractRequest
      */
     public function getCookie($key = null, $default = null)
     {
-        if (null === $key) {
+        if (null === $key)
+        {
             return $_COOKIE;
         }
 
@@ -285,7 +296,8 @@ class Http extends AbstractRequest
      */
     public function getServer($key = null, $default = null)
     {
-        if (null === $key) {
+        if (null === $key)
+        {
             return $_SERVER;
         }
 
@@ -303,7 +315,8 @@ class Http extends AbstractRequest
      */
     public function getEnv($key = null, $default = null)
     {
-        if (null === $key) {
+        if (null === $key)
+        {
             return $_ENV;
         }
 
@@ -377,7 +390,8 @@ class Http extends AbstractRequest
     public function getHttpHost()
     {
         $host = $this->getServer('HTTP_HOST');
-        if (!empty($host)) {
+        if (!empty($host))
+        {
             return $host;
         }
 
@@ -385,12 +399,16 @@ class Http extends AbstractRequest
         $name   = $this->getServer('SERVER_NAME');
         $port   = $this->getServer('SERVER_PORT');
 
-        if(null === $name) {
+        if(null === $name)
+        {
             return '';
         }
-        elseif (($scheme == self::SCHEME_HTTP && $port == 80) || ($scheme == self::SCHEME_HTTPS && $port == 443)) {
+        elseif (($scheme == self::SCHEME_HTTP && $port == 80) || ($scheme == self::SCHEME_HTTPS && $port == 443))
+        {
             return $name;
-        } else {
+        }
+        else
+        {
             return $name . ':' . $port;
         }
     }
@@ -403,14 +421,18 @@ class Http extends AbstractRequest
      */
     public function getClientIP($checkProxy = true)
     {
-        if ($checkProxy && $this->getServer('HTTP_CLIENT_IP') != null) {
+        if ($checkProxy && $this->getServer('HTTP_CLIENT_IP') != null)
+        {
             $ip = $this->getServer('HTTP_CLIENT_IP');
-        } else if ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null) {
+        }
+        else if ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null)
+        {
             $ip = $this->getServer('HTTP_X_FORWARDED_FOR');
-        } else {
+        }
+        else
+        {
             $ip = $this->getServer('REMOTE_ADDR');
         }
-
         return $ip;
     }
 

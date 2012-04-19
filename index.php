@@ -7,11 +7,11 @@
    // Add --> SetEnv APPLICATION_ENV "development"
    // in your virtualhost / .htaccess to define development mode
    
-   // What environment do we want to run it on?
+   // What environment do we want to run it on? Try to find the environment name in the Request or else default it to production
    defined('APPLICATION_ENV')  || define('APPLICATION_ENV', isset($_REQUEST['APPLICATION_ENV']) ? $_REQUEST['APPLICATION_ENV'] : (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
    
    // Full path to docroot of the website
-   define('NINJA_DOCROOT', __DIR__ .DIRECTORY_SEPARATOR);
+   define('NINJA_DOCROOT', __DIR__ . DIRECTORY_SEPARATOR);
    require NINJA_DOCROOT . 'ninja/vendor/Ninja/includes/init.php'; // define required constants
      
    // Enable Debug if NOT in production mode
