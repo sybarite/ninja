@@ -25,6 +25,11 @@
 
 Changelog
 
+v2.46 20/04/2012
+- Code cleanup and comments improvement across Image, Router, Upload, Exception classes, etc.
+- Deprecated \Ninja\Db in favor of upcoming Doctrine DBAL integration
+
+
 v2.45 18/04/2012
 - Core class code cleanup and comments.
 - Autoloader code cleanup and comments.
