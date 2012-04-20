@@ -3,7 +3,7 @@ namespace Ninja;
 
 /**
  * Class for connecting to MySQL databases and performing common operations.
- *
+ * @deprecated in favor of the upcoming DBAL integration
  * @throws \Ninja\Db\Exception
  */
 class Db extends \Zend_Db_Adapter_Pdo_Mysql
@@ -18,13 +18,13 @@ class Db extends \Zend_Db_Adapter_Pdo_Mysql
     /**
      *  Constructor for a new db connection
      *  $options = array(
-     *  				'host'     => 'localhost'
-     *              	'username' => 'my_user',
+     *                  'host'     => 'localhost'
+     *                  'username' => 'my_user',
      *                  'password' => 'qwerty123',
      *                  'dbname'   => 'project_db' )
      *
      *
-     * @param array $config
+     * @param array|\Zend_Config $config
      */
     public function __construct($config)
     {
