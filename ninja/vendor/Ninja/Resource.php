@@ -2,20 +2,27 @@
 namespace Ninja;
 
 /**
-* Main Helper Class
-* Inspiration: PPI Framework's Helper Class
+* A central manager of resources that are used throughout the app
 */
 class Resource
 {
+    /**
+     * Holds a singleton instance of this class
+     * @var \Ninja\Resource|null
+     */
     private static $_instance = null;
-    
-    private static $session_initialized = FALSE;
+
+    /**
+     * @var bool
+     */
+    private static $isSessionInitialized = false;
     
     /**
      * The initialise function to create the instance
      * @return void
      */
-    protected static function init() {
+    protected static function init()
+    {
         self::setInstance(new Resource());
     }
     
@@ -26,8 +33,10 @@ class Resource
      * @throws \Ninja\Exception
      * @return void
      */
-    static function setInstance(Resource $instance) {
-        if (self::$_instance !== null) {
+    static function setInstance(Resource $instance)
+    {
+        if (self::$_instance !== null)
+        {
             throw new \Ninja\Exception('\\Ninja\\Resource is already initialised');
         }
         self::$_instance = $instance;
@@ -38,20 +47,23 @@ class Resource
      *
      * @return Resource
      */
-    static function getInstance() {
-        if (self::$_instance === null) {
+    static function getInstance()
+    {
+        if (self::$_instance === null)
+        {
             self::init();
         }
         return self::$_instance;
     }
-    
+
     /**
-    * Get the cache object
-    * 
-    * @param string $template_key
-    * @return \Zend_Cache_Core
-    */
-    static function getCache($template_key='default')
+     * Get the cache object
+     *
+     * @param string $templateKey
+     * @throws Exception
+     * @return \Zend_Cache_Core
+     */
+    public static function getCache($templateKey='default')
     {
         if( ! \Ninja\Registry::isRegistered('Zend_Cache_Manager') )
         {
@@ -64,134 +76,132 @@ class Resource
         * @var $cacheManager \Zend_Cache_Manager
         */
         $cacheManager = \Ninja\Registry::get('Zend_Cache_Manager');
-        
-        
+
         // Is this cache template already registered?
-        $cache = $cacheManager->getCache($template_key);
-        if( $cache !== NULL )
+        $cache = $cacheManager->getCache($templateKey);
+        if ($cache !== null)
             return $cache;
     
         // Create new object from cache template
-        if( ! isset(\Ninja::$config['ninja']['resource']['cache']) )
+        if (!isset(\Ninja::$config['ninja']['resource']['cache']))
             throw new \Ninja\Exception("No 'ninja.resource.cache' defined in configuration.");
         
-        if( ! isset(\Ninja::$config['ninja']['resource']['cache'][$template_key]) || ! is_array(\Ninja::$config['ninja']['resource']['cache'][$template_key]) )
-            throw new \Ninja\Exception("No configuration defined for 'ninja.resource.cache.$template_key'.");
-            
-            
+        if (!isset(\Ninja::$config['ninja']['resource']['cache'][$templateKey]) || ! is_array(\Ninja::$config['ninja']['resource']['cache'][$templateKey]))
+            throw new \Ninja\Exception("No configuration defined for 'ninja.resource.cache.$templateKey'.");
+
         // Store cache template
-        $cacheManager->setCacheTemplate($template_key, \Ninja::$config['ninja']['resource']['cache'][$template_key]);
+        $cacheManager->setCacheTemplate($templateKey, \Ninja::$config['ninja']['resource']['cache'][$templateKey]);
         
-        return $cacheManager->getCache($template_key);
+        return $cacheManager->getCache($templateKey);
     }
-    
+
     /**
-    * Get the database object
-    *
-    * @param string $template_key
-    * @return \Ninja\Db
-    */
-    public static function getDb($template_key='default')
+     * Get the database object
+     *
+     * @param string $templateKey
+     * @throws Exception
+     * @return \Ninja\Db
+     */
+    public static function getDb($templateKey='default')
     {
         $registry = \Ninja\Registry::getInstance();
         $registry_key = 'Ninja_Db_Manager';
 
-        $db_collection = ( isset($registry[$registry_key]) ) ? $registry[$registry_key] : array();
+        $dbCollection = ( isset($registry[$registry_key]) ) ? $registry[$registry_key] : array();
 
         // Is this db template already in registry?
-        if( isset($db_collection[$template_key]) )
-            return $db_collection[$template_key]; // Return existing object
+        if (isset($dbCollection[$templateKey]))
+            return $dbCollection[$templateKey]; // Return existing object
 
         // Create new object from db template
-        if( ! isset(\Ninja::$config['ninja']['resource']['db']) )
+        if (!isset(\Ninja::$config['ninja']['resource']['db']))
             throw new \Ninja\Exception("No 'ninja.resource.db' defined in configuration.");
 
-        if( ! isset(\Ninja::$config['ninja']['resource']['db'][$template_key]) || ! is_array(\Ninja::$config['ninja']['resource']['db'][$template_key]) )
-            throw new \Ninja\Exception("No configuration defined for 'ninja.resource.db.$template_key'.");
+        if (!isset(\Ninja::$config['ninja']['resource']['db'][$templateKey]) || ! is_array(\Ninja::$config['ninja']['resource']['db'][$templateKey]))
+            throw new \Ninja\Exception("No configuration defined for 'ninja.resource.db.$templateKey'.");
 
         // Database resource configs are stored in ninja.resource.database
-        $db_template_config = \Ninja::$config['ninja']['resource']['db'][$template_key];
+        $dbTemplateConfig = \Ninja::$config['ninja']['resource']['db'][$templateKey];
         //$adapter = ( isset($db_template_config['adapter']) ) ? $db_template_config['adapter'] : 'Ninja_Db';
 
         // Create instance of adapter created with settings passed
-        $db = new \Ninja\Db($db_template_config);
+        $db = new \Ninja\Db($dbTemplateConfig);
 
-
-        $db_collection[$template_key] = $db;
+        $dbCollection[$templateKey] = $db;
 
         // Save collection back in registry
-        $registry[$registry_key] = $db_collection;
+        $registry[$registry_key] = $dbCollection;
 
         return $db;
     }
-    
 
-    
+
     /**
-    * Provdes an instance of the Zend_Mail with configurations defined.
-    * @return \Zend_Mail
-    */
-    static function getMail()
+     * Provdes an instance of the Zend_Mail with configurations defined.
+     * @throws Exception
+     * @return \Zend_Mail
+     */
+    public static function getMail()
     {
-        static $mail_initialized = FALSE;
+        static $isMailInitialized = false;
         
-        if ($mail_initialized === TRUE)
+        if ($isMailInitialized === true)
             return new \Zend_Mail();
         
         // Configuration initialized beyond this point
-        $mail_initialized = TRUE;
+        $isMailInitialized = true;
         
         // Check if any configuration defined?
-        if( ! isset(\Ninja::$config['ninja']['resource']['mail']) )
+        if (!isset(\Ninja::$config['ninja']['resource']['mail']))
             return new \Zend_Mail();
             
-        $mail_config = \Ninja::$config['ninja']['resource']['mail'];
+        $mailConfig = \Ninja::$config['ninja']['resource']['mail'];
 
         // Set defaultFrom
-        if( isset($mail_config['defaultFrom']) )
+        if (isset($mailConfig['defaultFrom']))
         {
-            $defaultFrom = $mail_config['defaultFrom'];
+            $defaultFrom = $mailConfig['defaultFrom'];
             
-            if( ! is_array($defaultFrom) )
+            if (!is_array($defaultFrom))
                 throw new \Ninja\Exception("The configuration 'mail.defaultFrom' must be an array.");
             
-            if( ! isset($defaultFrom['email']) )
+            if (!isset($defaultFrom['email']))
                 throw new \Ninja\Exception("The configuration 'mail.defaultFrom.email' must be defined.");
                 
-            \Zend_Mail::setDefaultFrom(  $defaultFrom['email'],
+            \Zend_Mail::setDefaultFrom( $defaultFrom['email'],
                                         isset($defaultFrom['name']) ? $defaultFrom['name'] : NULL
                                      );
         }
         
         // Set defaultReplyTo
-        if( isset($mail_config['defaultReplyTo']) )
+        if (isset($mailConfig['defaultReplyTo']))
         {
-            $defaultReplyTo = $mail_config['defaultReplyTo'];
+            $defaultReplyTo = $mailConfig['defaultReplyTo'];
             
-            if( ! is_array($defaultReplyTo) )
+            if (!is_array($defaultReplyTo))
                 throw new \Ninja\Exception("The configuration 'mail.defaultReplyTo' must be an array.");
             
-            if( ! isset($defaultReplyTo['email']) )
+            if (!isset($defaultReplyTo['email']))
                 throw new \Ninja\Exception("The configuration 'mail.defaultReplyTo.email' must be defined.");
                 
-            \Zend_Mail::setDefaultReplyTo(  $defaultReplyTo['email'],
+            \Zend_Mail::setDefaultReplyTo( $defaultReplyTo['email'],
                                            isset($defaultReplyTo['name']) ? $defaultReplyTo['name'] : NULL
                                         );
         }
         
         // Set default transport
-        if( isset($mail_config['transport']) )
+        if (isset($mailConfig['transport']))
         {
-            $transportSettings = $mail_config['transport'];
+            $transportSettings = $mailConfig['transport'];
             
-            if( ! is_array($transportSettings) )
+            if (!is_array($transportSettings))
                 throw new \Ninja\Exception("The configuration 'mail.transport' must be an array.");
                 
-            if( ! isset($transportSettings['type']) )
+            if (!isset($transportSettings['type']))
                 throw new \Ninja\Exception("The configuration 'mail.transport.type' must be defined.");
                 
-            $adapter     = 'Zend_Mail_Transport_' . ucfirst($transportSettings['type']);
-            $transport     = NULL;
+            $adapter   = 'Zend_Mail_Transport_' . ucfirst($transportSettings['type']);
+            $transport = null;
             
             switch($adapter)
             {
@@ -205,7 +215,7 @@ class Resource
                 case 'Zend_Mail_Transport_File':
                     
                     // If file protocol, create the default callback
-                    if( ! isset($transportSettings['callback']) )
+                    if (!isset($transportSettings['callback']))
                     {
 //                        $transportSettings['callback'] = 'ninja_resource_zend_mail_transport_file_callback';
 //                        function ninja_resource_zend_mail_transport_file_callback($transport) {
@@ -216,11 +226,11 @@ class Resource
                         };
                     }
                     
-                    if( ! isset($transportSettings['path']) || empty($transportSettings['path']) )
+                    if (!isset($transportSettings['path']) || empty($transportSettings['path']))
                     {
                         $mail_log_path = NINJA_LOGS_PATH . 'mail';
                         
-                        if( ! is_dir($mail_log_path) )
+                        if (!is_dir($mail_log_path))
                         {
                             // Create a mail log directory
                             mkdir($mail_log_path, 02777);
@@ -231,8 +241,7 @@ class Resource
                         
                         $transportSettings['path'] = $mail_log_path; // use this default path instead
                     }
-                    
-                    
+
                     $transport = new \Zend_Mail_Transport_File($transportSettings);
                     break;
                 
@@ -245,23 +254,25 @@ class Resource
         
         return new \Zend_Mail();
     }
-    
+
     /**
-    * Initializes a session.
-    * Must be called before any output is sent.
-    * 
-    */
+     * Initializes a session.
+     * Must be called before any output is sent.
+     *
+     * @throws Exception
+     * @return
+     */
     public static function startSession()
     {
         // If session already initialized?
-        if (self::$session_initialized === TRUE)
+        if (self::$isSessionInitialized === TRUE)
             return; // nothing to do here
             
         // Configuration initialized beyond this point
-        self::$session_initialized = TRUE;
+        self::$isSessionInitialized = TRUE;
         
         // Check if session configuration defined?
-        if( ! isset(\Ninja::$config['ninja']['resource']['session']) || ! is_array(\Ninja::$config['ninja']['resource']['session']) )
+        if (!isset(\Ninja::$config['ninja']['resource']['session']) || ! is_array(\Ninja::$config['ninja']['resource']['session']))
             throw new \Ninja\Exception("No 'ninja.resource.session' defined in configuration.");
         
         $session_config = \Ninja::$config['ninja']['resource']['session'];
@@ -295,5 +306,4 @@ class Resource
         self::startSession();
         return new \Zend_Session_Namespace($namespace, $singleInstance);
     }
-
 }

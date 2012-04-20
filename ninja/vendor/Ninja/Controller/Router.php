@@ -2,14 +2,18 @@
 namespace Ninja\Controller;
 
 /**
- * 
+ * Parses URLs and determines routes for requests
  */
 class Router
 {
     const DEFAULT_MODULE_NAME = 'Default';
     const CONTROLLER_EXTENSION = '.php';
 
-    private $_routes = array();
+    /**
+     * List of all registered routes
+     * @var array
+     */
+    protected $_routes = array();
 
     /**
      * Key/Value store of modules registered
@@ -19,6 +23,9 @@ class Router
      */
     protected $_registeredModules = array();
 
+    /**
+     *
+     */
     public function __construct()
     {
         // Autoload controllers under the Default module by default
@@ -42,14 +49,13 @@ class Router
         // Register the module namespace
         \Ninja::$autoLoader->registerNamespace($moduleName, NINJA_APPLICATION_MODULE_PATH . $moduleName);
 
-
         return $this;
 	}
 
     /**
 	* Add a route wildcard
 	*
-	* @param string $name
+	* @param string $name Give this route a name
 	* @param string $source the URI to be matched
 	* @param string $destination destination to be re-routed to
 	* @return \Ninja\Controller\Router
@@ -57,7 +63,6 @@ class Router
 	public function addRoute($name, $source, $destination )
 	{
 		$this->_routes[$source] = $destination;
-
 		return $this;
 	}
 
@@ -65,7 +70,7 @@ class Router
      * Matches any routes added against the URI to determine if the controller/method needs to be remapped.
      *
      * @param string $requestedPath
-     * @return string|false Routed URI or False
+     * @return string|boolean Routed URI or False
      */
     protected function _parseRoute($requestedPath)
     {
@@ -76,7 +81,7 @@ class Router
 
 		// Do we even have any custom routing to deal with?
 		if(count($routes) == 0)
-			return FALSE;
+			return false;
 
 		$uri = $requestedPath;
 
@@ -108,6 +113,13 @@ class Router
 		return false;
     }
 
+    /**
+     * Processes an HTTP Request Object.
+     * Set the rightModule, Controller, Action
+     *
+     * @param Request\Http $request
+     * @return array
+     */
 	public function processHttpRequest(\Ninja\Controller\Request\Http $request)
     {
         $requestedUrl = rtrim($request->getRequestUri(), '/'); // remove trailing '/'
@@ -164,7 +176,7 @@ class Router
      * @param string $moduleRequestedPath the path requested under this module
      * @return array|bool
      */
-    private function _findController($moduleName, $moduleRequestedPath)
+    protected function _findController($moduleName, $moduleRequestedPath)
     {
         // if root of the module being called
         if ($moduleRequestedPath === '')

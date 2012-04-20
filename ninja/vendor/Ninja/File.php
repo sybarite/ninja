@@ -6,17 +6,17 @@ namespace Ninja;
  */
 class File implements \Iterator
 {
-	/**
-	 * Creates a file on the filesystem and returns an object representing it.
-	 * 
-	 * This operation will be reverted by a filesystem transaction being rolled back.
-	 * 
-	 * @throws Filesystem\Exception  When no file was specified or the file already exists
-	 * 
-	 * @param  string $file_path  The path to the new file
-	 * @param  string $contents   The contents to write to the file, must be a non-NULL value to be written
-	 * @return \Ninja\File
-	 */
+    /**
+     * Creates a file on the filesystem and returns an object representing it.
+     *
+     * This operation will be reverted by a filesystem transaction being rolled back.
+     *
+     *
+     * @param  string $file_path  The path to the new file
+     * @param  string $contents   The contents to write to the file, must be a non-NULL value to be written
+     * @throws Filesystem\Exception
+     * @return \Ninja\File
+     */
 	static public function create($file_path, $contents)
 	{
         
