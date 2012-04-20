@@ -15,7 +15,7 @@ class Registry extends \ArrayObject
 
     /**
      * Registry object provides storage for shared objects.
-     * @var Ninja\Registry
+     * @var Registry
      */
     private static $_registry = null;
 
@@ -43,7 +43,8 @@ class Registry extends \ArrayObject
      */
     public static function setInstance(Registry $registry)
     {
-        if (self::$_registry !== null) {
+        if (self::$_registry !== null)
+        {
             throw new \Ninja\Exception('Registry is already initialized');
         }
 
@@ -73,11 +74,13 @@ class Registry extends \ArrayObject
      */
     public static function setClassName($registryClassName = '\Ninja\Registry')
     {
-        if (self::$_registry !== null) {
+        if (self::$_registry !== null)
+        {
             throw new \Ninja\Exception('Registry is already initialized');
         }
 
-        if (!is_string($registryClassName)) {
+        if (!is_string($registryClassName))
+        {
             throw new \Ninja\Exception("Argument is not a class name");
         }
 
@@ -87,7 +90,7 @@ class Registry extends \ArrayObject
     /**
      * Unset the default registry instance.
      * Primarily used in tearDown() in unit tests.
-     * @returns void
+     * @return void
      */
     public static function _unsetInstance()
     {
@@ -109,7 +112,8 @@ class Registry extends \ArrayObject
     {
         $instance = self::getInstance();
 
-        if (!$instance->offsetExists($index)) {
+        if (!$instance->offsetExists($index))
+        {
             throw new \Ninja\Exception("No entry is registered for key '$index'");
         }
 
@@ -143,7 +147,8 @@ class Registry extends \ArrayObject
      */
     public static function isRegistered($index)
     {
-        if (self::$_registry === null) {
+        if (self::$_registry === null)
+        {
             return false;
         }
         return self::$_registry->offsetExists($index);
@@ -153,7 +158,7 @@ class Registry extends \ArrayObject
      * Constructs a parent ArrayObject with default
      * ARRAY_AS_PROPS to allow acces as an object
      *
-     * @param array $array data array
+     * @param array|null|object $array $array data array
      */
     public function __construct($array = array())
     {
@@ -161,7 +166,8 @@ class Registry extends \ArrayObject
     }
 
     /**
-     * @param string $index
+     * @param mixed $index
+     * @return bool|string
      * @returns mixed
      *
      * Workaround for http://bugs.php.net/bug.php?id=40442 (ZF-960).
@@ -170,5 +176,4 @@ class Registry extends \ArrayObject
     {
         return array_key_exists($index, $this);
     }
-
 }
