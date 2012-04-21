@@ -1,6 +1,9 @@
 <?php
 namespace Ninja;
 
+/**
+ * Time Class
+ */
 class Time
 {
 	// Reusable Time Constants

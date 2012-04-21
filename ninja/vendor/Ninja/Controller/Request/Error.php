@@ -2,7 +2,7 @@
 namespace Ninja\Controller\Request;
 
 /**
- * Request object passed to error controller
+ * When an invalid request is made, an instance of this Request class is created
  */
 class Error extends AbstractRequest
 {
@@ -12,7 +12,7 @@ class Error extends AbstractRequest
     protected $_exception;
 
     /**
-     * @var \Ninja\Controller\AbstractRequest
+     * @var \Ninja\Controller\Request\AbstractRequest
      */
     protected $_errorRequest;
 

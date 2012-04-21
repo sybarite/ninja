@@ -1,7 +1,7 @@
 <?php
 namespace Ninja\File;
 // +------------------------------------------------------------------------+
-// | class.upload.php forked by Dayson for Macaroni 2.01                    |
+// | class.upload.php modified by Dayson for Ninja                          |
 // +------------------------------------------------------------------------+
 // | Copyright (c) Colin Verot 2003-2010. All rights reserved.              |
 // | Version       0.30                                                     |
@@ -2611,8 +2611,8 @@ class Upload {
      * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
      *
      * @access private
-     * @param  resource $dst_img Destination image
-     * @param  resource $src_img Overlay image
+     * @param $dst_im
+     * @param $src_im
      * @param  int      $dst_x   x-coordinate of destination point
      * @param  int      $dst_y   y-coordinate of destination point
      * @param  int      $src_x   x-coordinate of source point
@@ -2620,6 +2620,8 @@ class Upload {
      * @param  int      $src_w   Source width
      * @param  int      $src_h   Source height
      * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
+     * @internal param resource $dst_img Destination image
+     * @internal param resource $src_img Overlay image
      * @return resource Destination image
      */
     function imagecopymergealpha(&$dst_im, &$src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 0) {
@@ -4439,6 +4441,9 @@ class Upload {
      * This function has been published on the PHP website, and can be used freely
      *
      * @access public
+     * @param $im
+     * @param string $filename
+     * @return bool
      */
     function imagebmp(&$im, $filename = "") {
 

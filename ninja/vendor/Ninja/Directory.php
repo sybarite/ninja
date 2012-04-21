@@ -6,20 +6,20 @@ namespace Ninja;
  */
 class Directory
 {
-	/**
-	 * Creates a directory on the filesystem and returns an object representing it
-	 * 
-	 * The directory creation is done recursively, so if any of the parent
-	 * directories do not exist, they will be created.
-	 * 
-	 * This operation will be reverted by a filesystem transaction being rolled back.
-	 * 
-	 * @throws Filesystem\Exception  When no directory was specified, or the directory already exists
-	 * 
-	 * @param  string  $directory  The path to the new directory
-	 * @param  numeric $mode       The mode (permissions) to use when creating the directory. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
-	 * @return \Ninja\Directory
-	 */
+    /**
+     * Creates a directory on the filesystem and returns an object representing it
+     *
+     * The directory creation is done recursively, so if any of the parent
+     * directories do not exist, they will be created.
+     *
+     * This operation will be reverted by a filesystem transaction being rolled back.
+     *
+     *
+     * @param  string  $directory  The path to the new directory
+     * @param int $mode The mode (permissions) to use when creating the directory. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
+     * @throws Filesystem\Exception
+     * @return \Ninja\Directory
+     */
 	public static function create($directory, $mode=0777)
 	{
 		if (empty($directory)) {
@@ -103,21 +103,21 @@ class Directory
 	 * @var string
 	 */
 	protected $directory;
-	
-	
-	/**
-	 * Creates an object to represent a directory on the filesystem
-	 * 
-	 * If multiple \Ninja\Directory objects are created for a single directory,
-	 * they will reflect changes in each other including rename and delete
-	 * actions.
-	 * 
-	 * @throws Filesystem\Exception  When no directory was specified, when the directory does not exist or when the path specified is not a directory
-	 * 
-	 * @param  string  $directory    The path to the directory
-	 * @param  boolean $skip_checks  If file checks should be skipped, which improves performance, but may cause undefined behavior - only skip these if they are duplicated elsewhere
-	 * @return \Ninja\Directory
-	 */
+
+
+    /**
+     * Creates an object to represent a directory on the filesystem
+     *
+     * If multiple \Ninja\Directory objects are created for a single directory,
+     * they will reflect changes in each other including rename and delete
+     * actions.
+     *
+     *
+     * @param  string  $directory    The path to the directory
+     * @param  boolean $skip_checks  If file checks should be skipped, which improves performance, but may cause undefined behavior - only skip these if they are duplicated elsewhere
+     * @throws Filesystem\Exception
+     * @return \Ninja\Directory
+     */
 	public function __construct($directory, $skip_checks=FALSE)
 	{
 		if (!$skip_checks) {
@@ -310,25 +310,25 @@ class Directory
 		
 		return is_writable($this->directory);
 	}
-	
-	
-	/**
-	 * Moves the current directory into a different directory
-	 * 
-	 * Please note that ::rename() will rename a directory in its current
-	 * parent directory or rename it into a different parent directory.
-	 * 
-	 * If the current directory's name already exists in the new parent
-	 * directory and the overwrite flag is set to false, the name will be
-	 * changed to a unique name.
-	 * 
-	 *
-	 * @throws Filesystem\Exception  When the new parent directory passed is not a directory, is not readable or is a sub-directory of this directory
-	 * 
-	 * @param  \Ninja\Directory|string $new_parent_directory  The directory to move this directory into
-	 * @param  boolean           $overwrite             If the current filename already exists in the new directory, `TRUE` will cause the file to be overwritten, `FALSE` will cause the new filename to change
-	 * @return \Ninja\Directory  The directory object, to allow for method chaining
-	 */
+
+
+    /**
+     * Moves the current directory into a different directory
+     *
+     * Please note that ::rename() will rename a directory in its current
+     * parent directory or rename it into a different parent directory.
+     *
+     * If the current directory's name already exists in the new parent
+     * directory and the overwrite flag is set to false, the name will be
+     * changed to a unique name.
+     *
+     *
+     *
+     * @param  \Ninja\Directory|string $new_parent_directory  The directory to move this directory into
+     * @param  boolean           $overwrite             If the current filename already exists in the new directory, `TRUE` will cause the file to be overwritten, `FALSE` will cause the new filename to change
+     * @throws Filesystem\Exception
+     * @return \Ninja\Directory  The directory object, to allow for method chaining
+     */
 	public function move($new_parent_directory, $overwrite)
 	{
 		if (!$new_parent_directory instanceof \Ninja\Directory) {
@@ -341,16 +341,17 @@ class Directory
 		
 		return $this->rename($new_parent_directory->getPath() . $this->getName(), $overwrite);
 	}
-	
-	
-	/**
-	 * Renames the current directory
-	 * 
-	 *
-	 * @param  string  $new_dirname  The new full path to the directory or a new name in the current parent directory
-	 * @param  boolean $overwrite    If the new dirname already exists, TRUE will cause the file to be overwritten, FALSE will cause the new filename to change
-	 * @return void
-	 */
+
+
+    /**
+     * Renames the current directory
+     *
+     *
+     * @param  string  $new_dirname  The new full path to the directory or a new name in the current parent directory
+     * @param  boolean $overwrite    If the new dirname already exists, TRUE will cause the file to be overwritten, FALSE will cause the new filename to change
+     * @throws Filesystem\Exception
+     * @return void
+     */
 	public function rename($new_dirname, $overwrite)
 	{
 		$this->tossIfDeleted();
@@ -502,13 +503,14 @@ class Directory
 		
 		return $objects;
 	}
-	
-	
-	/**
-	 * Throws an exception if the directory has been deleted
-	 * 
-	 * @return void
-	 */
+
+
+    /**
+     * Throws an exception if the directory has been deleted
+     *
+     * @throws Filesystem\Exception
+     * @return void
+     */
 	protected function tossIfDeleted()
 	{
 		if ($this->deleted) {
@@ -575,8 +577,9 @@ class Directory
     /**
      * Creates a directory directly under this directory.
      *
-     * @param  string  $directory  The path to the new directory under this directory
-	 * @param  numeric $mode       The mode (permissions) to use when creating the directory. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
+     * @param $directoryPath
+     * @param int $mode The mode (permissions) to use when creating the directory. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
+     * @internal param string $directory The path to the new directory under this directory
      * @return \Ninja\Directory
      */
     public function createDirectory($directoryPath, $mode=0777)
@@ -588,8 +591,9 @@ class Directory
     /**
      * Ensures a directory under this directory
      *
-     * @param  string  $directory  The path to the directory under this directory
-	 * @param  numeric $mode       The mode (permissions) to use when creating the directory if it does not exist. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
+     * @param string $directoryPath
+     * @param int $mode The mode (permissions) to use when creating the directory if it does not exist. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.
+     * @internal param string $directory The path to the directory under this directory
      * @return \Ninja\Directory
      */
     public function ensureDirectory($directoryPath, $mode=0777)
@@ -613,7 +617,8 @@ class Directory
     /**
      * Checks if a file exists under this directory
      *
-     * @param string $filename Filename to check for under this directory
+     * @param string $dirPath
+     * @internal param string $filename Filename to check for under this directory
      * @return bool
      */
     public function hasDirectory($dirPath)
@@ -673,6 +678,8 @@ class Directory
      * into the destination directory.
      *
      * @param \Ninja\Directory $destDirectory
+     * @param $overwrite
+     * @throws Filesystem\Exception
      * @return \Ninja\Directory the destination ninja directory
      */
     public function duplicate(\Ninja\Directory $destDirectory, $overwrite)
@@ -700,7 +707,8 @@ class Directory
      *
      * @param string $source //file or folder
      * @param string $dest ///file or folder
-     * @param string $options //folderPermission,filePermission
+     * @param $overwrite
+     * @param array|string $options //folderPermission,filePermission
      * @return boolean
      */
     private function _smartCopy($source, $dest, $overwrite, $options=array())

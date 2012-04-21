@@ -44,9 +44,10 @@ class View
      * This method is static to prevent object scope resolution.
      *
      * @static
-     * @throws Exception
+     *
      * @param $ninja_view_filename
      * @param array $ninja_view_data
+     * @throws \Ninja\Exception
      * @return string
      */
     protected static function capture($ninja_view_filename, array $ninja_view_data)
@@ -196,6 +197,7 @@ class View
     /**
      * Magic method, returns the output of [self::render].
      *
+     * @throws \Ninja\Exception
      * @return  string
      * @uses    self::render
      */
@@ -238,7 +240,8 @@ class View
      *   array('Blog', 'foo.php')
      *
      * @param string|array $file
-     * @return string|false Path to view file or false if not found
+     * @throws Exception
+     * @return string|boolean Path to view file or false if not found
      */
     public static function find($file)
     {
@@ -325,9 +328,10 @@ class View
      * [!!] Global variables with the same key name as local variables will be
      * overwritten by the local variable.
      *
-     * @param    string|null  $view filename
+     * @param null $file
+     * @throws View\Exception
+     * @internal param null|string $view filename
      * @return   string
-     * @throws   \Ninja\View\Exception
      * @uses     self::capture
      */
     public function render($file = null)
