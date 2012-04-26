@@ -19,6 +19,15 @@
 		set_include_path(get_include_path() . PATH_SEPARATOR . ZEND_PATH ); // Add Zend's parent directory to include path
 	}
 
+    // Path to directory in which Doctrine library is located.
+    define( 'DOCTRINE_PATH', NINJA_VENDOR_PATH); // Comment if you don't use Doctrine
+
+	if( defined('DOCTRINE_PATH') )
+	{
+		Ninja::$autoLoader->registerNamespace('Doctrine', DOCTRINE_PATH . DIRECTORY_SEPARATOR . 'Doctrine');
+		set_include_path(get_include_path() . PATH_SEPARATOR . DOCTRINE_PATH ); // Add Doctrine's parent directory to include path
+	}
+
 	// Register namespaces for Autoloading
 	Ninja::$autoLoader->registerNamespace('Model', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Model')
                       ->registerNamespace('View', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'View')

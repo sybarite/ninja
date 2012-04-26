@@ -8,17 +8,20 @@ array(
 			// Database Related
 			'db' => array(
 				'default' => array(
-					'host'			=> 'localhost',
-					'username'		=> 'root',
-					'password'		=> '',
-					'dbname'		=> 'sakila'
+                    'dbname' => 'mydb',
+                    'user' => 'user',
+                    'password' => 'secret',
+                    'host' => 'localhost',
+                    'driver' => 'pdo_mysql'
 				),
 				'jukebox' => array(
-					'host'			=> 'localhost',
-					'username'		=> 'root',
-					'password'		=> '',
-					'dbname'		=> 'jukebox'
+                    'dbname' => 'mydb',
+                    'user' => 'user',
+                    'password' => 'secret',
+                    'host' => 'localhost',
+                    'driver' => 'pdo_mysql'
 				),
+
 			),
 			
 			
