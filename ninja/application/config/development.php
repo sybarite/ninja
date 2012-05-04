@@ -7,6 +7,8 @@ array(
 		'resource'	=> array(
 			// Database Related
 			'db' => array(
+
+                // Configure Doctrine DBAL connection for the main database
 				'default' => array(
                     'dbname' => 'mydb',
                     'user' => 'user',
@@ -14,6 +16,8 @@ array(
                     'host' => 'localhost',
                     'driver' => 'pdo_mysql'
 				),
+
+
 				'jukebox' => array(
                     'dbname' => 'mydb',
                     'user' => 'user',
@@ -21,7 +25,6 @@ array(
                     'host' => 'localhost',
                     'driver' => 'pdo_mysql'
 				),
-
 			),
 			
 			
