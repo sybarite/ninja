@@ -12,8 +12,8 @@
   Names (& URL):
 
 /* SITE */
-  Standards: HTML5, CSS3
-  Components: Modernizr, jQuery, Ninja
+  Standards: HTML5, CSS3, Ninja
+  Components: Ninja (github.com/epicwhale/ninja), Modernizr, jQuery,
   Software:
 
 
