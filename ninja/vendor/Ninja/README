@@ -3,8 +3,8 @@
 // +------------------------------------------------------------------------+
 // | Ninja														            |
 // | Copyright (c) Dayson Pais, Epicwhale. All rights reserved.             |
-// | Version       2.42                                                     |
-// | Last modified 24/02/2012                                               |
+// | Version       2.47                                                     |
+// | Last modified 04/05/2012                                               |
 // | Email         dayson@epicwhale.org                                     |
 // | Web           http://epicwhale.org                                     |
 // +------------------------------------------------------------------------+
@@ -24,6 +24,15 @@
 //
 
 Changelog
+
+v2.47 02/05/2012
+- Deprecated \Ninja\Resource::getCache(..) in favor of \Ninja\Resource::getZendCache(..)
+- Deprecated \Ninja\Resource::getDb(..) in favor of \Ninja\Resource::getZendDb(..)
+- Deprecated \Ninja\Resource::getMail(..) in favor of \Ninja\Resource::getZendMail(..)
+- Deprecated \Ninja\Resource::getSessionNamespace(..) in favor of \Ninja\Resource::getZendSessionNamespace(..)
+- Deprecated \Ninja\Resource::startSession(..) in favor of \Ninja\Resource::startZendSession(..)
+- Deprecated \Ninja\Resource::setInstance() & getInstance()
+- Additions to humans.txt
 
 v2.46 20/04/2012
 - Code cleanup and comments improvement across Image, Router, Upload, Exception classes, etc.
