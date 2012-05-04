@@ -7,17 +7,23 @@ array(
 		'resource'	=> array(
 			// Database Related
 			'db' => array(
+
+                // Configure Doctrine DBAL connection for the main database
 				'default' => array(
-					'host'			=> 'localhost',
-					'username'		=> 'root',
-					'password'		=> '',
-					'dbname'		=> 'sakila'
+                    'driver' => 'pdo_mysql',
+                    'host' => 'localhost',
+                    'dbname' => 'sakila',
+                    'user' => 'root',
+                    'password' => 'hgfdsa'
 				),
+
+
 				'jukebox' => array(
-					'host'			=> 'localhost',
-					'username'		=> 'root',
-					'password'		=> '',
-					'dbname'		=> 'jukebox'
+                    'driver' => 'pdo_mysql',
+                    'host' => 'localhost',
+                    'dbname' => 'jukebox',
+                    'user' => 'user',
+                    'password' => 'secret'
 				),
 			),
 			

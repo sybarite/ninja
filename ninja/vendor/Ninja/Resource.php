@@ -274,6 +274,46 @@ class Resource
         return new \Zend_Session_Namespace($namespace, $singleInstance);
     }
 
+
+    /**
+     * @static
+     * @param string $templateKey
+     * @return \Doctrine\DBAL\Connection
+     * @throws Exception
+     */
+    public static function getDoctrineDBALConnection($templateKey = 'default')
+    {
+        $registry = \Ninja\Registry::getInstance();
+        $registryKey = 'Ninja_Resource_DoctrineDBAL_Connection_Manager';
+
+        $dbCollection = (isset($registry[$registryKey])) ? $registry[$registryKey] : array();
+
+        // Is this db template already in registry?
+        if (isset($dbCollection[$templateKey]))
+            return $dbCollection[$templateKey]; // Return existing object
+
+        // Create new object from db template
+        if (!isset(\Ninja::$config['ninja']['resource']['db']))
+            throw new \Ninja\Exception("No 'ninja.resource.db' defined in configuration.");
+
+        if (!isset(\Ninja::$config['ninja']['resource']['db'][$templateKey]) || ! is_array(\Ninja::$config['ninja']['resource']['db'][$templateKey]))
+            throw new \Ninja\Exception("No configuration defined for 'ninja.resource.db.$templateKey'.");
+
+        // Database resource configs are stored in ninja.resource.db
+        $connectionParams = \Ninja::$config['ninja']['resource']['db'][$templateKey];
+
+        $config = new \Doctrine\DBAL\Configuration();
+
+        $db = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+        $dbCollection[$templateKey] = $db;
+
+        // Save collection back in registry
+        $registry[$registryKey] = $dbCollection;
+
+        return $db;
+    }
+
     /**
      * -----------------------------------------------------------------------------
      * ======== Deprecated Functions ===============================================

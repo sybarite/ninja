@@ -9,17 +9,15 @@
 
 	
 // -- Autoloading Setup ------------------------------------------------------------------
-	
-	// Path to directory in which Zend library is located.
-    define( 'ZEND_PATH', NINJA_VENDOR_PATH); // Comment if you don't use Zend or Zend dependencies
 
-	if( defined('ZEND_PATH') )
-	{
-		Ninja::$autoLoader->registerNamespace('Zend', ZEND_PATH . DIRECTORY_SEPARATOR . 'Zend');
-		set_include_path(get_include_path() . PATH_SEPARATOR . ZEND_PATH ); // Add Zend's parent directory to include path
-	}
+    // Register Zend Library namespace for autoloading
+	Ninja::$autoLoader->registerNamespace('Zend', NINJA_VENDOR_PATH . DIRECTORY_SEPARATOR . 'Zend');
+    set_include_path(get_include_path() . PATH_SEPARATOR . NINJA_VENDOR_PATH ); // Add Zend's parent directory to include path
 
-	// Register namespaces for Autoloading
+    // Register the Doctrine Library namespace for autoloading
+    Ninja::$autoLoader->registerNamespace('Doctrine', NINJA_VENDOR_PATH . 'Doctrine');
+
+	// Register any other namespaces for autoloading
 	Ninja::$autoLoader->registerNamespace('Model', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'Model')
                       ->registerNamespace('View', NINJA_APPLICATION_MODULE_DEFAULT_PATH . 'View')
                       ->registerNamespace('Layout', NINJA_APPLICATION_COMMON_PATH . 'Layout');  // You can chain to add additional namespaces
@@ -30,7 +28,7 @@
 
 // -- Routing Setup : Tutorial @ https://github.com/epicwhale/ninja/wiki/URI-Routing
 
-    if( ! Ninja::$isCli ) // No routing during command line mode (since the router is not available)
+    if (!Ninja::$isCli) // No routing during command line mode (since the router is not available)
     {
         /**
          * Routing in Ninja follows the same functionality as http://codeigniter.com/user_guide/general/routing.html

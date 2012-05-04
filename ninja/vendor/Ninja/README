@@ -26,13 +26,15 @@
 Changelog
 
 v2.47 02/05/2012
-- Deprecated \Ninja\Resource::getCache(..) in favor of \Ninja\Resource::getZendCache(..)
-- Deprecated \Ninja\Resource::getDb(..) in favor of \Ninja\Resource::getZendDb(..)
-- Deprecated \Ninja\Resource::getMail(..) in favor of \Ninja\Resource::getZendMail(..)
-- Deprecated \Ninja\Resource::getSessionNamespace(..) in favor of \Ninja\Resource::getZendSessionNamespace(..)
-- Deprecated \Ninja\Resource::startSession(..) in favor of \Ninja\Resource::startZendSession(..)
-- Deprecated \Ninja\Resource::setInstance() & getInstance()
+- Deprecated \Ninja\Resource::getCache(..) in favor of \Ninja\Resource::getZendCache(..) refs #8
+- Deprecated \Ninja\Resource::getDb(..) in favor of \Ninja\Resource::getZendDb(..) refs #8
+- Deprecated \Ninja\Resource::getMail(..) in favor of \Ninja\Resource::getZendMail(..) refs #8
+- Deprecated \Ninja\Resource::getSessionNamespace(..) in favor of \Ninja\Resource::getZendSessionNamespace(..) refs #8
+- Deprecated \Ninja\Resource::startSession(..) in favor of \Ninja\Resource::startZendSession(..) refs #8
+- Deprecated \Ninja\Resource::setInstance() & getInstance() refs #8
 - Additions to humans.txt
+- Added Doctrine DBAL and Common to vendor. refs #7
+- Access to configured DBAL Connection instance via \Ninja\Resource. closes #7
 
 v2.46 20/04/2012
 - Code cleanup and comments improvement across Image, Router, Upload, Exception classes, etc.
