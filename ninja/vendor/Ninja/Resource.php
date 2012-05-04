@@ -427,28 +427,4 @@ class Resource
     {
         return self::getZendSessionNamespace($namespace, $singleInstance);
     }
-
-    /**
-     * @static
-     * @param string $configKey
-     * @return \Doctrine\DBAL\Connection
-     */
-    public static function getDoctrineDBALConnection($configKey = 'default')
-    {
-        $registry = \Ninja\Registry::getInstance();
-        $registryKey = 'Doctrine_DBAL_Connection';
-
-        if (isset($registry[$registryKey]))
-            return $registry[$registryKey];
-
-        $config = new \Doctrine\DBAL\Configuration();
-
-        $userConfigs =\Ninja::config("ninja.resource.db");
-        $userConfig = $userConfigs[$configKey];
-
-        // create the connection for the config above and store it in the registry
-        $registry[$registryKey] = \Doctrine\DBAL\DriverManager::getConnection($userConfig, $config);
-
-        return $registry[$registryKey];
-    }
 }
